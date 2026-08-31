@@ -1,0 +1,91 @@
+---
+title: "Propiedades Customizadas CSS"
+description: "Estrategia de tokens de diseño semánticos utilizando variables CSS nativas para soportar fácilmente modo light/dark."
+date: "18-07-2026"
+---
+
+import { Card } from '@astrojs/starlight/components';
+
+<Card title="Metadatos del Módulo" icon="document">
+  - **Fecha de Creación o Actualización:** {frontmatter.date}
+  - **Descripción:** {frontmatter.description}
+</Card>
+
+## Configuración de Variables en `:root`
+
+Declaración centralizada de tokens de diseño tales como colores de marca, tipografías y sombras.
+
+```css
+:root {
+  /* Tokens de Color */
+  --brand-primary: #3b82f6;
+  --brand-success: #10b981;
+  --brand-warning: #f59e0b;
+  --brand-danger: #ef4444;
+
+  /* Colores del Sistema Neutros (Tema Claro por Defecto) */
+  --color-bg-base: #ffffff;
+  --color-bg-surface: #f3f4f6;
+  --color-text-base: #1f2937;
+  --color-text-muted: #6b7280;
+  --color-border: #e5e7eb;
+
+  /* Espaciado */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+
+  /* Tipografía */
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', Courier, monospace;
+}
+
+/* Redefinición para Tema Oscuro */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg-base: #0f172a;
+    --color-bg-surface: #1e293b;
+    --color-text-base: #f8fafc;
+    --color-text-muted: #94a3b8;
+    --color-border: #334155;
+  }
+}
+```
+
+## Ejemplo Práctico de Componente Semántico
+
+El uso estructurado de variables permite cambiar componentes simplemente redefiniendo las variables de fondo o borde.
+
+```html
+<div class="custom-card">
+  <h3 class="custom-card-title">Tokenizado Semántico</h3>
+  <p class="custom-card-text">Este cuadro cambia de apariencia de forma instantánea al cambiar el esquema del sistema operativo.</p>
+</div>
+```
+
+```css
+.custom-card {
+  font-family: var(--font-sans);
+  background-color: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-base);
+  padding: var(--space-lg);
+  border-radius: 0.5rem;
+  max-width: 400px;
+}
+
+.custom-card-title {
+  margin: 0 0 var(--space-sm) 0;
+  color: var(--color-text-base) !important;
+  font-size: 1.25rem;
+}
+
+.custom-card-text {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+```

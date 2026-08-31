@@ -1,0 +1,62 @@
+---
+title: "Animación con Intersection Observer"
+description: "Uso de la API nativa de Intersection Observer para disparar animaciones CSS cuando un elemento entra en el viewport."
+date: "18-07-2026"
+---
+
+import { Card } from '@astrojs/starlight/components';
+
+<Card title="Metadatos del Módulo" icon="document">
+  - **Fecha de Creación o Actualización:** {frontmatter.date}
+  - **Descripción:** {frontmatter.description}
+</Card>
+
+## Script de Animación JS
+
+La API `IntersectionObserver` sustituye de manera eficiente a los antiguos oyentes de eventos scroll pesados.
+
+```javascript
+document.addEventListener('DOMContentLoaded', () => {
+  const observerOptions = {
+    root: null, // utiliza el viewport actual como raíz
+    rootMargin: '0px',
+    threshold: 0.15 // Dispara cuando el 15% del elemento es visible
+  };
+
+  const observer = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        // Añade la clase de animación css
+        entry.target.classList.add('is-visible');
+        // Deja de observar para evitar re-disparos innecesarios
+        observer.unobserve(entry.target);
+      }
+    });
+  }, observerOptions);
+
+  // Selecciona todos los elementos a animar
+  const animateElements = document.querySelectorAll('.animate-on-scroll');
+  animateElements.forEach(el => observer.observe(el));
+});
+```
+
+## Estilo CSS de Transición Asociado
+
+```css
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  will-change: opacity, transform;
+}
+
+.animate-on-scroll.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+```
+
+```html
+<h2 class="animate-on-scroll">¡Texto Dinámico que Aparece de Abajo!</h2>
+<p class="animate-on-scroll">Esta sección se revelará progresivamente al bajar la página.</p>
+```

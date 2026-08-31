@@ -1,0 +1,80 @@
+---
+title: "Glassmorphism Moderno"
+description: "Un estilo visual premium que simula vidrio esmerilado translúcido flotando sobre un fondo degradado vibrante."
+date: "18-07-2026"
+---
+
+import { Card } from '@astrojs/starlight/components';
+
+<Card title="Metadatos del Módulo" icon="document">
+  - **Fecha de Creación o Actualización:** {frontmatter.date}
+  - **Descripción:** {frontmatter.description}
+</Card>
+
+## Estructura HTML Recomendada
+
+Este efecto resalta sobre fondos de alto contraste o degradados coloridos.
+
+```html
+<div class="glass-container">
+  <div class="glass-card">
+    <div class="glass-icon">⚡</div>
+    <h2>Rendimiento Web</h2>
+    <p>Acelera la respuesta visual y agiliza las interacciones en el cliente final.</p>
+  </div>
+</div>
+```
+
+## Estilo CSS con Backdrop Filter
+
+El truco fundamental radica en combinar un fondo semi-transparente (`rgba`), un borde fino y el uso de `backdrop-filter: blur()`.
+
+```css
+.glass-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 250px;
+  background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #8b5cf6 100%);
+  border-radius: 0.5rem;
+  padding: 2rem;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px); /* Soporte Safari */
+  border-radius: 1rem;
+  padding: 2rem;
+  width: 100%;
+  max-width: 320px;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+  color: #ffffff;
+  transition: transform 0.3s;
+}
+
+.glass-card:hover {
+  transform: scale(1.03);
+  border-color: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 8px 40px 0 rgba(0, 0, 0, 0.35);
+}
+
+.glass-icon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.glass-card h2 {
+  font-size: 1.5rem;
+  margin: 0 0 0.5rem 0;
+  color: #ffffff !important;
+}
+
+.glass-card p {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.87);
+  margin: 0;
+}
+```

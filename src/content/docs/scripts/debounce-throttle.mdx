@@ -1,0 +1,68 @@
+---
+title: "Debounce y Throttle en Vanilla JS"
+description: "Explicación e implementación de funciones de optimización para controlar la frecuencia de ejecución de eventos repetitivos como resize o scroll."
+date: "18-07-2026"
+---
+
+import { Card } from '@astrojs/starlight/components';
+
+<Card title="Metadatos del Módulo" icon="document">
+  - **Fecha de Creación o Actualización:** {frontmatter.date}
+  - **Descripción:** {frontmatter.description}
+</Card>
+
+## Utilidades de Optimización
+
+Al programar interfaces, llamadas constantes a servidores en búsquedas de texto o redimensionamiento pueden saturar la CPU y conexiones del usuario.
+
+### Implementación en JavaScript
+
+```javascript
+/**
+ * Retrasa la ejecución de una función hasta que hayan transcurrido
+ * X milisegundos de inactividad desde su último disparo.
+ */
+export function debounce(fn, delay) {
+  let timeoutId;
+  return function (...args) {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => {
+      fn.apply(this, args);
+    }, delay);
+  };
+}
+
+/**
+ * Limita el disparo de una función a una vez cada X milisegundos,
+ * asegurando una tasa de ejecución periódica controlable.
+ */
+export function throttle(fn, limit) {
+  let inThrottle = false;
+  return function (...args) {
+    if (!inThrottle) {
+      fn.apply(this, args);
+      inThrottle = true;
+      setTimeout(() => (inThrottle = false), limit);
+    }
+  };
+}
+```
+
+## Ejemplo Práctico de Consumo
+
+```javascript
+import { debounce, throttle } from './utils.js';
+
+// Optimizar búsqueda de texto interactiva (autocompletado)
+const searchInput = document.querySelector('#search');
+searchInput.addEventListener('input', debounce((event) => {
+  console.log('Buscando:', event.target.value);
+  // Realizar llamada API...
+}, 300));
+
+// Optimizar eventos de desplazamiento (scroll)
+window.addEventListener('scroll', throttle(() => {
+  const scrolled = window.scrollY;
+  console.log('Scroll position:', scrolled);
+}, 100));
+```
