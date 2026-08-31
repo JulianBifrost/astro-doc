@@ -5,7 +5,7 @@ import starlight from '@astrojs/starlight';
 // https://astro.build/config
 export default defineConfig({
 	site: 'https://julianbifrost.github.io',
-	base: 'astro-doc',
+	base: '/astro-doc',
 	integrations: [
 		starlight({
 			title: 'Docs/FED',
